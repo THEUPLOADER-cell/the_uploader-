@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import imageCompression from 'browser-image-compression'
 import { saveAs } from 'file-saver'
+import { Link } from 'react-router-dom'
 import ToolLayout from '../components/ToolLayout'
 import UploadZone, { FilePreview } from '../components/UploadZone'
 import { useProcessing } from '../hooks/useProcessing'
@@ -63,6 +64,7 @@ export default function ImageCompressor() {
       <ToolLayout
         title="Image Compressor – Compress Images Online"
         description="Compress JPG, PNG or WebP images to reduce file size while staying clear. Adjust quality to balance size and sharpness."
+        keywords="image compressor, compress image online, reduce image size, compress jpg, compress png, compress webp, photo compressor"
       >
         <UploadZone
           onDrop={handleDrop}
@@ -143,6 +145,47 @@ export default function ImageCompressor() {
               <li>Quality slider to control visual clarity.</li>
               <li>Safe default file name for quick downloads.</li>
             </ul>
+          </section>
+          <section className="pt-2">
+            <h2 className="font-display text-xl text-white mb-2">What is an image compressor?</h2>
+            <p className="text-slate-300 text-sm">
+              An <strong>image compressor</strong> reduces file size while keeping the picture visually clear.
+              This helps when websites reject uploads due to size limits, or when you want images to load faster
+              and take less storage. With THE UPLOADER, you can <strong>compress image online</strong> for JPG,
+              PNG, and WebP without sending files to a server—compression runs in your browser for speed and privacy.
+            </p>
+          </section>
+          <section>
+            <h2 className="font-display text-xl text-white mb-2">How to use it (steps)</h2>
+            <ul className="list-disc list-inside text-slate-300 text-sm space-y-1.5">
+              <li>Upload an image from your device.</li>
+              <li>Move the quality slider to balance clarity and size.</li>
+              <li>Optionally set an output filename.</li>
+              <li>Click <strong>Compress image</strong> to download the optimized file.</li>
+            </ul>
+            <p className="mt-3 text-slate-300 text-sm">
+              If an upload requires a strict limit (like 200KB or 2MB), try a lower quality value, then re-check
+              readability—especially for text-heavy scans.
+            </p>
+          </section>
+          <section>
+            <h2 className="font-display text-xl text-white mb-2">Why choose this tool?</h2>
+            <p className="text-slate-300 text-sm">
+              THE UPLOADER keeps the workflow simple and lightweight—no login, no uploads, and quick results.
+              For a complete submission workflow, you may also want to{' '}
+              <Link to="/image-resizer" className="text-accent-secondary hover:text-accent-primary hover:underline underline-offset-2">
+                resize images
+              </Link>
+              ,{' '}
+              <Link to="/image-format-converter" className="text-accent-secondary hover:text-accent-primary hover:underline underline-offset-2">
+                convert formats
+              </Link>
+              , or bundle photos into a document with{' '}
+              <Link to="/image-to-pdf" className="text-accent-secondary hover:text-accent-primary hover:underline underline-offset-2">
+                Image to PDF
+              </Link>
+              .
+            </p>
           </section>
         </div>
       </ToolLayout>

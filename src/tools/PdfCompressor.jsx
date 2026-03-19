@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { saveAs } from 'file-saver'
 import { PDFDocument } from 'pdf-lib'
+import { Link } from 'react-router-dom'
 import ToolLayout from '../components/ToolLayout'
 import UploadZone, { FilePreview } from '../components/UploadZone'
 import { useProcessing } from '../hooks/useProcessing'
@@ -66,6 +67,7 @@ export default function PdfCompressor() {
       <ToolLayout
         title="PDF Compressor – Reduce PDF File Size Online"
         description="Compress PDF files to reduce size while keeping them readable. Ideal for meeting strict upload limits on portals and email."
+        keywords="compress pdf online, reduce pdf size, shrink pdf, pdf compressor, optimize pdf file size, make pdf smaller"
       >
         <UploadZone onDrop={handleDrop} accept={PDF_ACCEPT} multiple={false} maxSize={MAX_SIZE} disabled={processing} />
         <FilePreview files={files} onRemove={removeFile} />
@@ -126,6 +128,49 @@ export default function PdfCompressor() {
               <li>No upload, no login, and no storage.</li>
               <li>Friendly progress indicator for larger documents.</li>
             </ul>
+          </section>
+          <section className="pt-2">
+            <h2 className="font-display text-xl text-white mb-2">What is a PDF compressor?</h2>
+            <p className="text-slate-300 text-sm">
+              A <strong>PDF compressor</strong> reduces the size of a PDF file so it’s easier to upload,
+              email, or submit to portals that have strict limits (like 2MB or 5MB). Many PDFs become large
+              because of scanned images, repeated resources, or inefficient structure. With THE UPLOADER,
+              you can <strong>compress PDF online</strong> without uploading your document to a server—everything
+              happens inside your browser for privacy and speed.
+            </p>
+          </section>
+          <section>
+            <h2 className="font-display text-xl text-white mb-2">How to use it (steps)</h2>
+            <ul className="list-disc list-inside text-slate-300 text-sm space-y-1.5">
+              <li>Upload your PDF (single file) from your device.</li>
+              <li>Check the original size shown on the page.</li>
+              <li>Choose a clear output name if you want.</li>
+              <li>Click <strong>Compress PDF</strong>, then download the optimized file.</li>
+            </ul>
+            <p className="mt-3 text-slate-300 text-sm">
+              Tip: After compressing, open the result quickly to confirm text and important visuals still look good
+              before uploading to an application portal.
+            </p>
+          </section>
+          <section>
+            <h2 className="font-display text-xl text-white mb-2">Why choose this tool?</h2>
+            <p className="text-slate-300 text-sm">
+              THE UPLOADER is designed for fast, no-login workflows. Because it runs client-side, it avoids
+              upload delays and reduces privacy risks. If you’re preparing files for submission, you may also
+              need to{' '}
+              <Link to="/pdf-splitter" className="text-accent-secondary hover:text-accent-primary hover:underline underline-offset-2">
+                split a PDF
+              </Link>
+              ,{' '}
+              <Link to="/pdf-merger" className="text-accent-secondary hover:text-accent-primary hover:underline underline-offset-2">
+                merge PDFs
+              </Link>
+              , or convert images using{' '}
+              <Link to="/image-to-pdf" className="text-accent-secondary hover:text-accent-primary hover:underline underline-offset-2">
+                Image to PDF
+              </Link>
+              .
+            </p>
           </section>
         </div>
       </ToolLayout>

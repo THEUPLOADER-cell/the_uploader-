@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import imageCompression from 'browser-image-compression'
 import { saveAs } from 'file-saver'
+import { Link } from 'react-router-dom'
 import ToolLayout from '../components/ToolLayout'
 import UploadZone, { FilePreview } from '../components/UploadZone'
 import { useProcessing } from '../hooks/useProcessing'
@@ -57,6 +58,7 @@ export default function ImageResizer() {
     <ToolLayout
       title="Image Resizer – Resize Images Online"
       description="Resize JPG, PNG or WebP images to custom dimensions online. Keep aspect ratio or set exact width and height for your pictures."
+      keywords="resize image online, image resizer tool, change image size, resize jpg, resize png, resize webp, set image dimensions"
     >
       <UploadZone
         onDrop={handleDrop}
@@ -132,6 +134,57 @@ export default function ImageResizer() {
           <p className="text-slate-300 text-sm">
             Use this image resizer when websites or applications request specific image sizes, such as
             profile photos, ID pictures, or banner images.
+          </p>
+        </section>
+        <section className="pt-2">
+          <h2 className="font-display text-xl text-white mb-2">What is an image resizer?</h2>
+          <p className="text-slate-300 text-sm">
+            An <strong>image resizer tool</strong> changes the dimensions of an image (for example, to
+            300×300 or 800×600) so it meets upload requirements or fits a specific layout. Many portals,
+            job applications, and exam forms reject images that are “too large” or not in the correct size.
+            With THE UPLOADER you can <strong>resize image online</strong> in seconds while keeping processing
+            on your own device for privacy.
+          </p>
+        </section>
+        <section>
+          <h2 className="font-display text-xl text-white mb-2">How to use it</h2>
+          <ul className="list-disc list-inside text-slate-300 text-sm space-y-1.5">
+            <li>Upload one or more JPG, PNG, or WebP images.</li>
+            <li>Enter your target width and height in pixels.</li>
+            <li>Enable <strong>Keep aspect ratio</strong> for natural scaling, or disable it for exact sizing.</li>
+            <li>Click <strong>Resize images</strong> to download resized files.</li>
+          </ul>
+          <p className="mt-3 text-slate-300 text-sm">
+            For best results, keep aspect ratio on when resizing photos so faces and text don’t look stretched.
+            Use exact sizing only when a website requires strict dimensions.
+          </p>
+        </section>
+        <section>
+          <h2 className="font-display text-xl text-white mb-2">Features</h2>
+          <ul className="list-disc list-inside text-slate-300 text-sm space-y-1.5">
+            <li>Resize multiple images in one run.</li>
+            <li>Aspect ratio mode for clean, proportional resizing.</li>
+            <li>Exact width/height mode for strict requirements.</li>
+            <li>Local processing for speed and privacy.</li>
+          </ul>
+        </section>
+        <section>
+          <h2 className="font-display text-xl text-white mb-2">Why choose this tool?</h2>
+          <p className="text-slate-300 text-sm">
+            THE UPLOADER keeps the workflow simple: upload, set dimensions, download. If you’re preparing
+            files for a portal, you may also want to{' '}
+            <Link to="/image-compressor" className="text-accent-secondary hover:text-accent-primary hover:underline underline-offset-2">
+              compress an image
+            </Link>
+            ,{' '}
+            <Link to="/image-format-converter" className="text-accent-secondary hover:text-accent-primary hover:underline underline-offset-2">
+              convert image formats
+            </Link>
+            , or create a document using{' '}
+            <Link to="/image-to-pdf" className="text-accent-secondary hover:text-accent-primary hover:underline underline-offset-2">
+              Image to PDF
+            </Link>
+            .
           </p>
         </section>
       </div>

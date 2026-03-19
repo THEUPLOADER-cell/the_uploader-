@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { saveAs } from 'file-saver'
 import jsPDF from 'jspdf'
+import { Link } from 'react-router-dom'
 import ToolLayout from '../components/ToolLayout'
 import UploadZone, { FilePreview } from '../components/UploadZone'
 import { useProcessing } from '../hooks/useProcessing'
@@ -73,6 +74,7 @@ export default function ImageToPdf() {
       <ToolLayout
         title="Image to PDF Converter – Free Online Tool"
         description="Convert one or more images into a single PDF file in your browser. Supports JPG, PNG and WebP with no uploads."
+        keywords="image to pdf converter, jpg to pdf online, png to pdf, webp to pdf, combine images into pdf, photos to pdf"
       >
         <UploadZone
           onDrop={handleDrop}
@@ -136,6 +138,59 @@ export default function ImageToPdf() {
             <p className="text-slate-300 text-sm">
               Use this converter when websites or portals only accept PDFs but your files are currently
               photos or screenshots taken on your phone.
+            </p>
+          </section>
+          <section className="pt-2">
+            <h2 className="font-display text-xl text-white mb-2">What is an Image to PDF converter?</h2>
+            <p className="text-slate-300 text-sm">
+              An <strong>image to PDF converter</strong> turns photos or screenshots (JPG, PNG, or WebP)
+              into a single PDF document. This is useful when an upload form accepts only PDF files, or
+              when you want multiple images to stay together in one neat file. Instead of attaching many
+              separate images, you can combine them into one PDF with pages in the same order you upload.
+              THE UPLOADER runs fully in your browser, so your files stay on your device while you create
+              the PDF.
+            </p>
+          </section>
+          <section>
+            <h2 className="font-display text-xl text-white mb-2">How to use this tool</h2>
+            <ul className="list-disc list-inside text-slate-300 text-sm space-y-1.5">
+              <li>Upload images (JPG, PNG, or WebP) using drag &amp; drop or the file picker.</li>
+              <li>Remove any image you don’t want included.</li>
+              <li>Optionally edit the output file name.</li>
+              <li>Click <strong>Create PDF</strong> and download your file.</li>
+            </ul>
+            <p className="mt-3 text-slate-300 text-sm">
+              If you need a quick <strong>JPG to PDF online</strong> workflow for forms, assignments, or
+              ID uploads, this tool helps you produce a clean PDF without sending your images to a server.
+            </p>
+          </section>
+          <section>
+            <h2 className="font-display text-xl text-white mb-2">Features</h2>
+            <ul className="list-disc list-inside text-slate-300 text-sm space-y-1.5">
+              <li>Combine multiple images into a single PDF in the order you upload.</li>
+              <li>Supports JPG, PNG, and WebP (WebP is converted safely to JPEG for compatibility).</li>
+              <li>Automatic scaling and centering so pages look tidy.</li>
+              <li>Runs locally in your browser for privacy.</li>
+            </ul>
+          </section>
+          <section>
+            <h2 className="font-display text-xl text-white mb-2">Why choose THE UPLOADER?</h2>
+            <p className="text-slate-300 text-sm">
+              When you convert images to PDF, privacy and speed matter. THE UPLOADER performs processing
+              on your device, avoids unnecessary steps, and keeps the interface simple so you can finish
+              quickly. For related workflows, you can also try{' '}
+              <Link to="/pdf-compressor" className="text-accent-secondary hover:text-accent-primary hover:underline underline-offset-2">
+                PDF Compressor
+              </Link>
+              ,{' '}
+              <Link to="/image-compressor" className="text-accent-secondary hover:text-accent-primary hover:underline underline-offset-2">
+                Image Compressor
+              </Link>
+              , or{' '}
+              <Link to="/image-resizer" className="text-accent-secondary hover:text-accent-primary hover:underline underline-offset-2">
+                Image Resizer
+              </Link>
+              .
             </p>
           </section>
         </div>

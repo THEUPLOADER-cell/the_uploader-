@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { saveAs } from 'file-saver'
 import { PDFDocument } from 'pdf-lib'
+import { Link } from 'react-router-dom'
 import ToolLayout from '../components/ToolLayout'
 import UploadZone, { FilePreview } from '../components/UploadZone'
 import { useProcessing } from '../hooks/useProcessing'
@@ -45,6 +46,7 @@ export default function PdfMerger() {
     <ToolLayout
       title="PDF Merger – Combine PDF Files Online"
       description="Merge multiple PDF files into a single document in your browser. Keep pages in order and download one clean combined PDF."
+      keywords="merge pdf online, combine pdf files, join pdf, pdf merger, merge multiple pdfs, combine pdf pages"
     >
       <UploadZone
         onDrop={handleDrop}
@@ -87,6 +89,53 @@ export default function PdfMerger() {
           <p className="text-slate-300 text-sm">
             Ideal when you have multiple statements, scanned pages, or forms that must be uploaded as
             a single PDF. Combine everything on your device without sending files to a server.
+          </p>
+        </section>
+        <section className="pt-2">
+          <h2 className="font-display text-xl text-white mb-2">What is a PDF merger?</h2>
+          <p className="text-slate-300 text-sm">
+            A <strong>PDF merger</strong> combines multiple PDF files into one document. This is helpful when a portal
+            requires “one file only”, when you’re assembling multiple scans, or when you want to keep related paperwork
+            in a single PDF. With THE UPLOADER, you can <strong>merge PDF online</strong> quickly in your browser,
+            without uploads or accounts.
+          </p>
+        </section>
+        <section>
+          <h2 className="font-display text-xl text-white mb-2">How to use it</h2>
+          <ul className="list-disc list-inside text-slate-300 text-sm space-y-1.5">
+            <li>Upload two or more PDF files (they’ll be merged in upload order).</li>
+            <li>Remove any file you don’t want included.</li>
+            <li>Click <strong>Merge PDFs</strong> and download the combined PDF.</li>
+          </ul>
+          <p className="mt-3 text-slate-300 text-sm">
+            If you need a specific order, upload your PDFs in that sequence (for example: ID, form, receipts).
+          </p>
+        </section>
+        <section>
+          <h2 className="font-display text-xl text-white mb-2">Features</h2>
+          <ul className="list-disc list-inside text-slate-300 text-sm space-y-1.5">
+            <li>Merge multiple PDFs into one clean file.</li>
+            <li>Works fully in-browser for privacy.</li>
+            <li>Clear progress indicator for larger merges.</li>
+          </ul>
+        </section>
+        <section>
+          <h2 className="font-display text-xl text-white mb-2">Why choose this tool?</h2>
+          <p className="text-slate-300 text-sm">
+            THE UPLOADER is designed for fast submissions: no login, no waiting for uploads, and no server storage.
+            If you’re managing multi-page documents, you may also want to{' '}
+            <Link to="/pdf-splitter" className="text-accent-secondary hover:text-accent-primary hover:underline underline-offset-2">
+              split a PDF
+            </Link>
+            ,{' '}
+            <Link to="/pdf-page-extractor" className="text-accent-secondary hover:text-accent-primary hover:underline underline-offset-2">
+              extract pages
+            </Link>
+            , or{' '}
+            <Link to="/pdf-compressor" className="text-accent-secondary hover:text-accent-primary hover:underline underline-offset-2">
+              compress a PDF
+            </Link>
+            .
           </p>
         </section>
       </div>

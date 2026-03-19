@@ -2,12 +2,13 @@ import { memo } from 'react'
 import { motion } from 'framer-motion'
 import { Helmet } from 'react-helmet-async'
 
-function ToolLayout({ title, description, children }) {
+function ToolLayout({ title, description, keywords, children }) {
   return (
     <>
       <Helmet>
         <title>{title} | THE UPLOADER</title>
         <meta name="description" content={description} />
+        {keywords ? <meta name="keywords" content={keywords} /> : null}
       </Helmet>
       <motion.div
         initial={{ opacity: 0 }}
