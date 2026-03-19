@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Block common non-public/system paths (add if introduced)
+Disallow: /assets/
+Disallow: /src/
+Disallow: /node_modules/
+
+Sitemap: https://theuploader.app/sitemap.xml
