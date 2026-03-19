@@ -67,7 +67,7 @@ export default function HomePage() {
           href={
             typeof window !== 'undefined'
               ? `${window.location.origin}/`
-              : 'https://theuploader.app/'
+              : 'https://theuploader.in/'
           }
         />
         <meta property="og:title" content="THE UPLOADER – Free Online PDF & Image Tools | Convert, Compress, Merge" />
@@ -80,7 +80,7 @@ export default function HomePage() {
           content={
             typeof window !== 'undefined'
               ? window.location.href
-              : 'https://theuploader.app/'
+              : 'https://theuploader.in/'
           }
         />
         <meta property="og:type" content="website" />

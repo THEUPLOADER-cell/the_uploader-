@@ -1,77 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://theuploader.app/</loc>
+    <loc>https://theuploader.in/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://theuploader.app/help</loc>
+    <loc>https://theuploader.in/help</loc>
     <changefreq>monthly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://theuploader.app/privacy-policy</loc>
+    <loc>https://theuploader.in/privacy-policy</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://theuploader.app/image-compressor</loc>
+    <loc>https://theuploader.in/image-compressor</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://theuploader.app/image-format-converter</loc>
+    <loc>https://theuploader.in/image-format-converter</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://theuploader.app/image-resizer</loc>
+    <loc>https://theuploader.in/image-resizer</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://theuploader.app/image-to-pdf</loc>
+    <loc>https://theuploader.in/image-to-pdf</loc>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
   </url>
   <url>
-    <loc>https://theuploader.app/pdf-compressor</loc>
+    <loc>https://theuploader.in/pdf-compressor</loc>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
   </url>
   <url>
-    <loc>https://theuploader.app/pdf-merger</loc>
+    <loc>https://theuploader.in/pdf-merger</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://theuploader.app/pdf-page-extractor</loc>
+    <loc>https://theuploader.in/pdf-page-extractor</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://theuploader.app/pdf-page-rotator</loc>
+    <loc>https://theuploader.in/pdf-page-rotator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://theuploader.app/pdf-splitter</loc>
+    <loc>https://theuploader.in/pdf-splitter</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://theuploader.app/pdf-to-image</loc>
+    <loc>https://theuploader.in/pdf-to-image</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://theuploader.app/pdf-watermark</loc>
+    <loc>https://theuploader.in/pdf-watermark</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://theuploader.app/word-to-pdf</loc>
+    <loc>https://theuploader.in/word-to-pdf</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>

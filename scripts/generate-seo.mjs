@@ -8,7 +8,7 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 const projectRoot = path.resolve(__dirname, '..')
 
-const SITE_URL = (process.env.SITE_URL || process.env.VITE_SITE_URL || 'https://theuploader.app')
+const SITE_URL = (process.env.SITE_URL || process.env.VITE_SITE_URL || 'https://theuploader.in')
   .trim()
   .replace(/\/+$/, '')
 
