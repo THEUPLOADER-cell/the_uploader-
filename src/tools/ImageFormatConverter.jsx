@@ -6,7 +6,7 @@ import { useProcessing } from '../hooks/useProcessing'
 
 const IMAGE_ACCEPT = { 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'], 'image/webp': ['.webp'] }
 const MAX_SIZE = 20 * 1024 * 1024
-const MAX_FILES = 10
+const MAX_FILES = 200
 
 const FORMATS = [
   { value: 'image/jpeg', label: 'JPG', ext: 'jpg' },
@@ -50,6 +50,7 @@ export default function ImageFormatConverter() {
       finish()
     } catch (e) {
       setError(e?.message || 'Failed to convert images')
+      finish()
     }
   }
 

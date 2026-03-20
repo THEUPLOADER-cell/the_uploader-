@@ -8,7 +8,7 @@ import { useProcessing } from '../hooks/useProcessing'
 
 const IMAGE_ACCEPT = { 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'], 'image/webp': ['.webp'] }
 const MAX_SIZE = 20 * 1024 * 1024
-const MAX_FILES = 10
+const MAX_FILES = 200
 
 export default function ImageResizer() {
   const [files, setFiles] = useState([])
@@ -51,6 +51,7 @@ export default function ImageResizer() {
       finish()
     } catch (e) {
       setError(e?.message || 'Failed to resize images')
+      finish()
     }
   }
 

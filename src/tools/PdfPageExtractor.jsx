@@ -6,7 +6,7 @@ import UploadZone, { FilePreview } from '../components/UploadZone'
 import { useProcessing } from '../hooks/useProcessing'
 
 const PDF_ACCEPT = { 'application/pdf': ['.pdf'] }
-const MAX_SIZE = 50 * 1024 * 1024
+const MAX_SIZE = 200 * 1024 * 1024
 
 export default function PdfPageExtractor() {
   const [files, setFiles] = useState([])
@@ -57,6 +57,7 @@ export default function PdfPageExtractor() {
       finish()
     } catch (e) {
       setError(e?.message || 'Failed to extract pages')
+      finish()
     }
   }
 

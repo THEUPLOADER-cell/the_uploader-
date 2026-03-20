@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { saveAs } from 'file-saver'
 import { PDFDocument } from 'pdf-lib'
+import * as pdfjsLib from 'pdfjs-dist/build/pdf';
+import pdfWorker from 'pdfjs-dist/build/pdf.worker?worker';
 import { Link } from 'react-router-dom'
 import ToolLayout from '../components/ToolLayout'
 import UploadZone, { FilePreview } from '../components/UploadZone'
@@ -9,7 +11,7 @@ import { formatFileSize } from '../utils/fileSize'
 import DownloadSuccessModal from '../components/DownloadSuccessModal'
 
 const PDF_ACCEPT = { 'application/pdf': ['.pdf'] }
-const MAX_SIZE = 50 * 1024 * 1024
+const MAX_SIZE = 200 * 1024 * 1024
 
 export default function PdfCompressor() {
   const [files, setFiles] = useState([])
@@ -22,34 +24,72 @@ export default function PdfCompressor() {
   const removeFile = () => setFiles([])
 
   const process = async () => {
-    if (!files.length) return
-    start()
+    if (!files.length) return;
+    start();
     try {
-      setProgressValue(10)
-      const file = files[0]
-      const buf = await file.arrayBuffer()
-      const pdf = await PDFDocument.load(buf, { ignoreEncryption: true })
-      setProgressValue(50)
-      const pages = pdf.getPages()
-      const newPdf = await PDFDocument.create()
-      for (let i = 0; i < pages.length; i++) {
-        setProgressValue(50 + (i / pages.length) * 40)
-        const [copiedPage] = await newPdf.copyPages(pdf, [i])
-        newPdf.addPage(copiedPage)
+      setProgressValue(10);
+      const file = files[0];
+      const buf = await file.arrayBuffer();
+
+      // Vite-compatible pdf.js worker setup
+      pdfjsLib.GlobalWorkerOptions.workerPort = new pdfWorker();
+
+      const pdfjsDoc = await pdfjsLib.getDocument({ data: buf }).promise;
+      const newPdf = await PDFDocument.create();
+      // Remove metadata
+      newPdf.setTitle('');
+      newPdf.setAuthor('');
+      newPdf.setSubject('');
+      newPdf.setKeywords([]);
+      newPdf.setProducer('');
+      newPdf.setCreator('');
+
+      let actuallyCompressed = false;
+      for (let i = 0; i < pdfjsDoc.numPages; i++) {
+        setProgressValue(10 + (i / pdfjsDoc.numPages) * 80);
+        const page = await pdfjsDoc.getPage(i + 1);
+        const viewport = page.getViewport({ scale: 1.0 });
+        // Render to canvas
+        const canvas = document.createElement('canvas');
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+        const ctx = canvas.getContext('2d');
+        await page.render({ canvasContext: ctx, viewport }).promise;
+        // Compress as JPEG
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.65);
+        // Add to new PDF as a page-sized image
+        const imgBytes = await fetch(dataUrl).then(res => res.arrayBuffer());
+        const img = await newPdf.embedJpg(imgBytes);
+        const pdfPage = newPdf.addPage([viewport.width, viewport.height]);
+        pdfPage.drawImage(img, {
+          x: 0,
+          y: 0,
+          width: viewport.width,
+          height: viewport.height,
+        });
+        actuallyCompressed = true;
       }
-      setProgressValue(95)
-      const outBytes = await newPdf.save({ useObjectStreams: true })
-      setProgressValue(100)
-      const blob = new Blob([outBytes], { type: 'application/pdf' })
-      const safeName = fileName && fileName.trim().length ? fileName.trim() : 'the-uploader-compressed.pdf'
-      saveAs(blob, safeName)
-      setLastBlob(blob)
-      finish()
-      setShowSuccess(true)
+
+      setProgressValue(95);
+      let outBytes;
+      if (actuallyCompressed) {
+        outBytes = await newPdf.save({ useObjectStreams: true });
+      } else {
+        // Fallback: just re-save original if not image-based
+        outBytes = buf;
+      }
+      setProgressValue(100);
+      const blob = new Blob([outBytes], { type: 'application/pdf' });
+      const safeName = fileName && fileName.trim().length ? fileName.trim() : 'the-uploader-compressed.pdf';
+      saveAs(blob, safeName);
+      setLastBlob(blob);
+      finish();
+      setShowSuccess(true);
     } catch (e) {
-      setError(e?.message || 'Failed to compress PDF')
+      setError(e?.message || 'Failed to compress PDF. (Tip: Image-based PDFs compress best. Text-only PDFs may not shrink much.)');
+      finish();
     }
-  }
+  };
 
   const originalSize = files[0]?.size
 
@@ -85,6 +125,15 @@ export default function PdfCompressor() {
               className="mt-1 w-full px-4 py-2 rounded-xl bg-dark-700 border border-dark-500 text-white placeholder-slate-500"
             />
           </label>
+        </div>
+        {/* User info box for expectations */}
+        <div className="mt-6 bg-dark-700 border border-dark-500 rounded-xl p-4 text-slate-200 text-sm">
+          <strong>Note:</strong> This tool works best for <span className="text-accent-primary font-medium">image-based or scanned PDFs</span>.<br />
+          <ul className="list-disc list-inside mt-2 ml-2">
+            <li>Text-only PDFs may not reduce much in size.</li>
+            <li>File size reduction depends on the content and quality of images inside the PDF.</li>
+            <li>All processing happens in your browser for privacy and speed.</li>
+          </ul>
         </div>
         {error && <p className="mt-4 text-red-400 text-sm">{error}</p>}
         {processing && (

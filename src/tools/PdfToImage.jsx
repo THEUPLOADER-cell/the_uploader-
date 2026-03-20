@@ -9,7 +9,7 @@ import { useProcessing } from '../hooks/useProcessing'
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorker
 
 const PDF_ACCEPT = { 'application/pdf': ['.pdf'] }
-const MAX_SIZE = 50 * 1024 * 1024
+const MAX_SIZE = 200 * 1024 * 1024
 
 export default function PdfToImage() {
   const [files, setFiles] = useState([])
@@ -47,6 +47,7 @@ export default function PdfToImage() {
       finish()
     } catch (e) {
       setError(e?.message || 'Failed to convert PDF to images')
+      finish()
     }
   }
 

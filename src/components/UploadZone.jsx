@@ -7,7 +7,7 @@ function UploadZone({
   onDrop,
   accept,
   multiple = true,
-  maxSize = 50 * 1024 * 1024,
+  maxSize = 200 * 1024 * 1024,
   maxFiles,
   disabled,
 }) {

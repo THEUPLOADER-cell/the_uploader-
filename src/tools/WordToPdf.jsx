@@ -77,6 +77,7 @@ export default function WordToPdf() {
       setShowSuccess(true)
     } catch (e) {
       setError(e?.message || 'Failed to convert Word document to PDF')
+      finish()
     }
   }
 

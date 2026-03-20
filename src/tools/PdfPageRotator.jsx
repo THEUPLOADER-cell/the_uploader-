@@ -6,7 +6,7 @@ import UploadZone, { FilePreview } from '../components/UploadZone'
 import { useProcessing } from '../hooks/useProcessing'
 
 const PDF_ACCEPT = { 'application/pdf': ['.pdf'] }
-const MAX_SIZE = 50 * 1024 * 1024
+const MAX_SIZE = 200 * 1024 * 1024
 
 const ROTATIONS = [
   { value: 90, label: '90° clockwise' },
@@ -46,6 +46,7 @@ export default function PdfPageRotator() {
       finish()
     } catch (e) {
       setError(e?.message || 'Failed to rotate PDF')
+      finish()
     }
   }
 

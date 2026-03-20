@@ -9,7 +9,7 @@ import DownloadSuccessModal from '../components/DownloadSuccessModal'
 
 const IMAGE_ACCEPT = { 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'], 'image/webp': ['.webp'] }
 const MAX_SIZE = 20 * 1024 * 1024
-const MAX_FILES = 30
+const MAX_FILES = 200
 
 export default function ImageToPdf() {
   const [files, setFiles] = useState([])
@@ -57,6 +57,7 @@ export default function ImageToPdf() {
       setShowSuccess(true)
     } catch (e) {
       setError(e?.message || 'Failed to create PDF')
+      finish()
     }
   }
 

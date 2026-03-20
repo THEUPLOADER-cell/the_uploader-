@@ -7,7 +7,7 @@ import UploadZone, { FilePreview } from '../components/UploadZone'
 import { useProcessing } from '../hooks/useProcessing'
 
 const PDF_ACCEPT = { 'application/pdf': ['.pdf'] }
-const MAX_SIZE = 50 * 1024 * 1024
+const MAX_SIZE = 200 * 1024 * 1024
 const MAX_FILES = 20
 
 export default function PdfMerger() {
@@ -39,6 +39,7 @@ export default function PdfMerger() {
       finish()
     } catch (e) {
       setError(e?.message || 'Failed to merge PDFs')
+      finish()
     }
   }
 
