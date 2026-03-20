@@ -11,7 +11,7 @@ const WORD_ACCEPT = {
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
   'application/msword': ['.doc'],
 }
-const MAX_SIZE = 20 * 1024 * 1024
+const MAX_SIZE = 100 * 1024 * 1024
 
 export default function WordToPdf() {
   const [files, setFiles] = useState([])
