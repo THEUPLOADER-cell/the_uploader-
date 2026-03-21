@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { saveAs } from 'file-saver'
 import jsPDF from 'jspdf'
 import { Link } from 'react-router-dom'
@@ -18,8 +18,61 @@ export default function ImageToPdf() {
   const [lastBlob, setLastBlob] = useState(null)
   const { processing, progress, error, start, finish, setProgressValue, setError, reset } = useProcessing()
 
-  const handleDrop = (accepted) => setFiles((prev) => [...prev, ...accepted].slice(0, MAX_FILES))
-  const removeFile = (i) => setFiles((prev) => prev.filter((_, idx) => idx !== i))
+  // Mobile detection
+  const [isMobile, setIsMobile] = useState(false)
+
+  // Mobile detection
+  useEffect(() => {
+    const checkMobile = () => {
+      try {
+        if (typeof navigator === 'undefined' || typeof window === 'undefined') return
+        const userAgent = navigator.userAgent.toLowerCase()
+        const isMobileDevice = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent)
+        const isSmallScreen = window.innerWidth < 768
+        setIsMobile(isMobileDevice || isSmallScreen)
+      } catch (error) {
+        // Fallback to false if detection fails
+        setIsMobile(false)
+      }
+    }
+
+    checkMobile()
+    if (typeof window !== 'undefined') {
+      window.addEventListener('resize', checkMobile)
+      return () => window.removeEventListener('resize', checkMobile)
+    }
+  }, [])
+
+  const handleDrop = (accepted) => {
+    try {
+      setFiles((prev) => [...prev, ...accepted].slice(0, MAX_FILES))
+    } catch (error) {
+      console.error('Error handling file drop:', error)
+      setError('Failed to process uploaded files. Please try again.')
+    }
+  }
+  const removeFile = (i) => {
+    try {
+      setFiles((prev) => prev.filter((_, idx) => idx !== i))
+    } catch (error) {
+      console.error('Error removing file:', error)
+    }
+  }
+
+  // Handle camera/gallery file selection
+  const handleCameraCapture = (event) => {
+    try {
+      const selectedFiles = Array.from(event.target.files || [])
+      if (selectedFiles.length > 0) {
+        setFiles((prev) => [...prev, ...selectedFiles].slice(0, MAX_FILES))
+      }
+      // Reset the input so the same file can be selected again if needed
+      event.target.value = ''
+    } catch (error) {
+      console.error('Error handling camera capture:', error)
+      setError('Failed to process selected images. Please try again.')
+    }
+  }
 
   const process = async () => {
     if (!files.length) return
@@ -77,54 +130,167 @@ export default function ImageToPdf() {
         description="Convert one or more images into a single PDF file in your browser. Supports JPG, PNG and WebP with no uploads."
         keywords="image to pdf converter, jpg to pdf online, png to pdf, webp to pdf, combine images into pdf, photos to pdf"
       >
-        <UploadZone
-          onDrop={handleDrop}
-          accept={IMAGE_ACCEPT}
-          multiple
-          maxSize={MAX_SIZE}
-          maxFiles={MAX_FILES}
-          disabled={processing}
-        />
-        <FilePreview files={files} onRemove={removeFile} />
-        <div className="mt-6 max-w-md">
-          <label className="block">
-            <span className="text-slate-400 text-sm">File name before download</span>
-            <input
-              type="text"
-              value={fileName}
-              onChange={(e) => setFileName(e.target.value)}
-              placeholder="the-uploader-image.pdf"
-              className="mt-1 w-full px-4 py-2 rounded-xl bg-dark-700 border border-dark-500 text-white placeholder-slate-500"
-            />
-          </label>
-        </div>
-        {error && <p className="mt-4 text-red-400 text-sm">{error}</p>}
-        {processing && (
-          <div className="mt-4 h-2 bg-dark-600 rounded-full overflow-hidden">
-            <div className="h-full bg-accent-primary transition-all duration-300" style={{ width: `${progress}%` }} />
+        <div className="space-y-6">
+          {/* Upload Section */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="flex-1">
+                <UploadZone
+                  onDrop={handleDrop}
+                  accept={IMAGE_ACCEPT}
+                  multiple
+                  maxSize={MAX_SIZE}
+                  maxFiles={MAX_FILES}
+                  disabled={processing}
+                />
+              </div>
+              {isMobile && (
+                <div className="flex flex-col gap-2 min-w-[140px]">
+                  <label className="flex flex-col items-center gap-2 px-4 py-3 rounded-xl bg-gradient-to-r from-accent-primary to-accent-secondary text-white font-medium cursor-pointer hover:from-accent-secondary hover:to-accent-primary transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none">
+                    <span className="text-2xl">📷</span>
+                    <span className="text-xs text-center">Camera</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      capture="environment"
+                      multiple
+                      onChange={handleCameraCapture}
+                      disabled={processing}
+                      className="hidden"
+                    />
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const input = document.createElement('input')
+                      input.type = 'file'
+                      input.accept = 'image/*'
+                      input.multiple = true
+                      input.onchange = handleCameraCapture
+                      input.click()
+                    }}
+                    disabled={processing}
+                    className="flex flex-col items-center gap-2 px-4 py-3 rounded-xl bg-dark-600 text-slate-300 hover:bg-dark-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <span className="text-2xl">🖼️</span>
+                    <span className="text-xs text-center">Gallery</span>
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
-        )}
-        <div className="mt-6 flex gap-3">
-          <button
-            type="button"
-            onClick={process}
-            disabled={!files.length || processing}
-            className="px-6 py-3 rounded-xl bg-accent-primary text-white font-medium disabled:opacity-50 disabled:cursor-not-allowed hover:bg-accent-secondary transition-colors"
-          >
-            {processing ? 'Creating…' : 'Create PDF'}
-          </button>
-          {files.length > 0 && !processing && (
+
+          {/* Image Preview Section */}
+          {files.length > 0 && (
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <h3 className="text-slate-300 font-medium">
+                  Selected Images ({files.length})
+                </h3>
+                {files.length > 0 && !processing && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setFiles([])
+                      reset()
+                    }}
+                    className="text-sm text-slate-500 hover:text-red-400 transition-colors"
+                  >
+                    Clear All
+                  </button>
+                )}
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                {files.map((file, i) => (
+                  <div key={file.name + i} className="relative group">
+                    <div className="aspect-square rounded-lg overflow-hidden bg-dark-700 border border-dark-600">
+                      <img
+                        src={URL.createObjectURL(file)}
+                        alt={file.name}
+                        className="w-full h-full object-cover"
+                        onLoad={(e) => URL.revokeObjectURL(e.target.src)}
+                      />
+                    </div>
+                    <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-200 rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100">
+                      <button
+                        type="button"
+                        onClick={() => removeFile(i)}
+                        className="bg-red-500 hover:bg-red-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-lg font-bold transition-colors"
+                        aria-label="Remove image"
+                      >
+                        ×
+                      </button>
+                    </div>
+                    <div className="absolute bottom-1 left-1 bg-black bg-opacity-75 text-white text-xs px-2 py-1 rounded">
+                      {(file.size / 1024 / 1024).toFixed(1)} MB
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* File Name Input */}
+          <div className="max-w-md">
+            <label className="block">
+              <span className="text-slate-400 text-sm font-medium">Output File Name</span>
+              <input
+                type="text"
+                value={fileName}
+                onChange={(e) => setFileName(e.target.value)}
+                placeholder="the-uploader-image.pdf"
+                className="mt-2 w-full px-4 py-3 rounded-xl bg-dark-700 border border-dark-500 text-white placeholder-slate-500 focus:border-accent-primary focus:ring-2 focus:ring-accent-primary/20 transition-all"
+              />
+            </label>
+          </div>
+
+          {/* Error Message */}
+          {error && (
+            <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-4">
+              <div className="flex items-center gap-2">
+                <span className="text-red-400">⚠️</span>
+                <p className="text-red-400 text-sm">{error}</p>
+              </div>
+            </div>
+          )}
+
+          {/* Progress Bar */}
+          {processing && (
+            <div className="space-y-2">
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-slate-300">Creating PDF...</span>
+                <span className="text-slate-500">{Math.round(progress)}%</span>
+              </div>
+              <div className="h-3 bg-dark-600 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-gradient-to-r from-accent-primary to-accent-secondary transition-all duration-300 ease-out"
+                  style={{ width: `${progress}%` }}
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Action Buttons */}
+          <div className="flex flex-col sm:flex-row gap-3 pt-4">
             <button
               type="button"
-              onClick={() => {
-                setFiles([])
-                reset()
-              }}
-              className="px-6 py-3 rounded-xl bg-dark-600 text-slate-300 hover:bg-dark-500"
+              onClick={process}
+              disabled={!files.length || processing}
+              className="flex-1 px-8 py-4 rounded-xl bg-gradient-to-r from-accent-primary to-accent-secondary text-white font-semibold text-lg disabled:opacity-50 disabled:cursor-not-allowed hover:from-accent-secondary hover:to-accent-primary transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-[1.02] disabled:transform-none flex items-center justify-center gap-2"
             >
-              Clear
+              {processing ? (
+                <>
+                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  Creating PDF...
+                </>
+              ) : (
+                <>
+                  <span className="text-xl">📄</span>
+                  Create PDF ({files.length} image{files.length !== 1 ? 's' : ''})
+                </>
+              )}
             </button>
-          )}
+          </div>
         </div>
         <div className="mt-10 grid gap-6">
           <section>
@@ -156,7 +322,8 @@ export default function ImageToPdf() {
             <h2 className="font-display text-xl text-white mb-2">How to use this tool</h2>
             <ul className="list-disc list-inside text-slate-300 text-sm space-y-1.5">
               <li>Upload images (JPG, PNG, or WebP) using drag &amp; drop or the file picker.</li>
-              <li>Remove any image you don’t want included.</li>
+              <li>On mobile devices, use "Camera" to take new photos or "Gallery" to select existing images.</li>
+              <li>Remove any image you don't want included.</li>
               <li>Optionally edit the output file name.</li>
               <li>Click <strong>Create PDF</strong> and download your file.</li>
             </ul>
@@ -196,6 +363,7 @@ export default function ImageToPdf() {
           </section>
         </div>
       </ToolLayout>
+
       <DownloadSuccessModal
         open={showSuccess}
         onClose={() => setShowSuccess(false)}

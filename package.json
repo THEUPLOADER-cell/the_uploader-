@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "browser-image-compression": "^2.0.2",
+    "cropperjs": "^2.1.0",
     "file-saver": "^2.0.5",
     "framer-motion": "^11.0.0",
     "jspdf": "^2.5.1",
