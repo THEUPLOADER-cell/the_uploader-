@@ -9,6 +9,7 @@ import Hero from '../components/Hero'
 import ToolCard from '../components/ToolCard'
 import { useToolSearch } from '../context/ToolSearchContext'
 import { TOOLS } from '../data/tools'
+import { canonicalUrl, getSiteUrl } from '../utils/site'
 
 const tools = TOOLS
 
@@ -62,69 +63,56 @@ export default function HomePage() {
           name="description"
           content="THE UPLOADER is a free online toolkit to convert, compress, merge, split and resize PDFs and images directly in your browser. No signup, files stay private."
         />
-        <link
-          rel="canonical"
-          href={
-            typeof window !== 'undefined'
-              ? `${window.location.origin}/`
-              : 'https://theuploader.in/'
-          }
-        />
+        <meta name="robots" content="index, follow" />
+        <link rel="canonical" href={canonicalUrl('/')} />
         <meta property="og:title" content="THE UPLOADER – Free Online PDF & Image Tools | Convert, Compress, Merge" />
         <meta
           property="og:description"
           content="Free online tools for PDFs and images – convert, compress, merge, split and resize files directly in your browser. Your files never leave your device."
         />
-        <meta
-          property="og:url"
-          content={
-            typeof window !== 'undefined'
-              ? window.location.href
-              : 'https://theuploader.in/'
-          }
-        />
+        <meta property="og:url" content={canonicalUrl('/')} />
         <meta property="og:type" content="website" />
-        <meta property="og:image" content="/logo.svg" />
+        <meta property="og:image" content={`${getSiteUrl()}/logo.svg`} />
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:title" content="THE UPLOADER – Free Online PDF & Image Tools | Convert, Compress, Merge" />
         <meta
           name="twitter:description"
           content="Convert, compress, merge, split and resize PDFs and images directly in your browser. No signup, files stay private."
         />
-        <meta name="twitter:image" content="/logo.svg" />
+        <meta name="twitter:image" content={`${getSiteUrl()}/logo.svg`} />
         <script type="application/ld+json">
           {JSON.stringify({
             '@context': 'https://schema.org',
             '@graph': [
               {
                 '@type': 'Organization',
-                '@id': `${typeof window !== 'undefined' ? window.location.origin : ''}#organization`,
+                '@id': `${getSiteUrl()}/#organization`,
                 name: 'THE UPLOADER',
-                url: typeof window !== 'undefined' ? window.location.origin : '',
+                url: getSiteUrl(),
                 description:
                   'THE UPLOADER provides free online PDF and image tools including converters, compressors, mergers and splitters. All processing happens in your browser.',
               },
               {
                 '@type': 'WebSite',
-                '@id': `${typeof window !== 'undefined' ? window.location.origin : ''}#website`,
-                url: typeof window !== 'undefined' ? window.location.origin : '',
+                '@id': `${getSiteUrl()}/#website`,
+                url: getSiteUrl(),
                 name: 'THE UPLOADER',
                 description:
                   'Free online tools for PDFs and images – convert, compress, merge, split and resize files directly in your browser.',
                 publisher: {
-                  '@id': `${typeof window !== 'undefined' ? window.location.origin : ''}#organization`,
+                  '@id': `${getSiteUrl()}/#organization`,
                 },
                 potentialAction: {
                   '@type': 'SearchAction',
-                  target: `${typeof window !== 'undefined' ? window.location.origin : ''}/?q={search_term_string}`,
+                  target: `${getSiteUrl()}/?q={search_term_string}`,
                   'query-input': 'required name=search_term_string',
                 },
               },
               {
                 '@type': 'WebApplication',
-                '@id': `${typeof window !== 'undefined' ? window.location.origin : ''}#webapp`,
+                '@id': `${getSiteUrl()}/#webapp`,
                 name: 'THE UPLOADER',
-                url: typeof window !== 'undefined' ? window.location.origin : '',
+                url: getSiteUrl(),
                 applicationCategory: 'UtilitiesApplication',
                 description:
                   'Browser-based PDF and image utilities for converting, compressing, merging, splitting and resizing files without uploads.',
@@ -135,7 +123,7 @@ export default function HomePage() {
                   priceCurrency: 'USD',
                 },
                 provider: {
-                  '@id': `${typeof window !== 'undefined' ? window.location.origin : ''}#organization`,
+                  '@id': `${getSiteUrl()}/#organization`,
                 },
               },
             ],

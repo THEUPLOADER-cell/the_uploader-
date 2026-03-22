@@ -1,9 +1,8 @@
 User-agent: *
 Allow: /
 
-# Block common non-public/system paths (add if introduced)
-Disallow: /assets/
+# Dev-only paths are not deployed; listed for crawlers that probe common URLs
 Disallow: /src/
 Disallow: /node_modules/
 
-Sitemap: https://theuploader.in/sitemap.xml
+Sitemap: https://www.theuploader.in/sitemap.xml

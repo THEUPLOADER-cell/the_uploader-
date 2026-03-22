@@ -1,14 +1,32 @@
 import { memo } from 'react'
+import { useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Helmet } from 'react-helmet-async'
+import { canonicalUrl, getSiteUrl } from '../utils/site'
 
 function ToolLayout({ title, description, keywords, children }) {
+  const { pathname } = useLocation()
+  const canonical = canonicalUrl(pathname)
+  const pageTitle = `${title} | THE UPLOADER`
+  const ogImage = `${getSiteUrl()}/logo.svg`
+
   return (
     <>
       <Helmet>
-        <title>{title} | THE UPLOADER</title>
+        <title>{pageTitle}</title>
         <meta name="description" content={description} />
+        <meta name="robots" content="index, follow" />
+        <link rel="canonical" href={canonical} />
         {keywords ? <meta name="keywords" content={keywords} /> : null}
+        <meta property="og:title" content={pageTitle} />
+        <meta property="og:description" content={description} />
+        <meta property="og:url" content={canonical} />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content={ogImage} />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content={pageTitle} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={ogImage} />
       </Helmet>
       <motion.div
         initial={{ opacity: 0 }}

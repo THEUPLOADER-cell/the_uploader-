@@ -3,7 +3,7 @@ import { saveAs } from 'file-saver'
 import jsPDF from 'jspdf'
 import { Link } from 'react-router-dom'
 import ToolLayout from '../components/ToolLayout'
-import UploadZone, { FilePreview } from '../components/UploadZone'
+import UploadZone from '../components/UploadZone'
 import { useProcessing } from '../hooks/useProcessing'
 import DownloadSuccessModal from '../components/DownloadSuccessModal'
 
@@ -16,6 +16,8 @@ export default function ImageToPdf() {
   const [fileName, setFileName] = useState('the-uploader-image.pdf')
   const [showSuccess, setShowSuccess] = useState(false)
   const [lastBlob, setLastBlob] = useState(null)
+  const [showPreviewModal, setShowPreviewModal] = useState(false)
+  const [draggedIndex, setDraggedIndex] = useState(null)
   const { processing, progress, error, start, finish, setProgressValue, setError, reset } = useProcessing()
 
   // Mobile detection
@@ -42,6 +44,18 @@ export default function ImageToPdf() {
       return () => window.removeEventListener('resize', checkMobile)
     }
   }, [])
+
+  useEffect(() => {
+    if (!showPreviewModal) return undefined
+    if (typeof document === 'undefined') return undefined
+
+    const { overflow } = document.body.style
+    document.body.style.overflow = 'hidden'
+
+    return () => {
+      document.body.style.overflow = overflow
+    }
+  }, [showPreviewModal])
 
   const handleDrop = (accepted) => {
     try {
@@ -72,6 +86,34 @@ export default function ImageToPdf() {
       console.error('Error handling camera capture:', error)
       setError('Failed to process selected images. Please try again.')
     }
+  }
+
+  const clearAllFiles = () => {
+    setFiles([])
+    reset()
+  }
+
+  const handleDragStart = (index) => {
+    setDraggedIndex(index)
+  }
+
+  const handleDragOver = (event) => {
+    event.preventDefault()
+  }
+
+  const handleDropReorder = (dropIndex) => {
+    if (draggedIndex === null || draggedIndex === dropIndex) {
+      setDraggedIndex(null)
+      return
+    }
+
+    setFiles((prev) => {
+      const next = [...prev]
+      const [moved] = next.splice(draggedIndex, 1)
+      next.splice(dropIndex, 0, moved)
+      return next
+    })
+    setDraggedIndex(null)
   }
 
   const process = async () => {
@@ -180,52 +222,21 @@ export default function ImageToPdf() {
             </div>
           </div>
 
-          {/* Image Preview Section */}
+          {/* Image Selection Section */}
           {files.length > 0 && (
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <h3 className="text-slate-300 font-medium">
-                  Selected Images ({files.length})
-                </h3>
-                {files.length > 0 && !processing && (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setFiles([])
-                      reset()
-                    }}
-                    className="text-sm text-slate-500 hover:text-red-400 transition-colors"
-                  >
-                    Clear All
-                  </button>
-                )}
-              </div>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-                {files.map((file, i) => (
-                  <div key={file.name + i} className="relative group">
-                    <div className="aspect-square rounded-lg overflow-hidden bg-dark-700 border border-dark-600">
-                      <img
-                        src={URL.createObjectURL(file)}
-                        alt={file.name}
-                        className="w-full h-full object-cover"
-                        onLoad={(e) => URL.revokeObjectURL(e.target.src)}
-                      />
-                    </div>
-                    <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-200 rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100">
-                      <button
-                        type="button"
-                        onClick={() => removeFile(i)}
-                        className="bg-red-500 hover:bg-red-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-lg font-bold transition-colors"
-                        aria-label="Remove image"
-                      >
-                        ×
-                      </button>
-                    </div>
-                    <div className="absolute bottom-1 left-1 bg-black bg-opacity-75 text-white text-xs px-2 py-1 rounded">
-                      {(file.size / 1024 / 1024).toFixed(1)} MB
-                    </div>
-                  </div>
-                ))}
+            <div className="flex items-center justify-between gap-3 rounded-xl border border-dark-600 bg-dark-700/40 p-4">
+              <p className="text-slate-300 font-medium">
+                {files.length} image{files.length !== 1 ? 's' : ''} selected
+              </p>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setShowPreviewModal(true)}
+                  disabled={processing}
+                  className="px-4 py-2 rounded-lg bg-dark-600 text-slate-200 hover:bg-dark-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Preview Images
+                </button>
               </div>
             </div>
           )}
@@ -363,6 +374,69 @@ export default function ImageToPdf() {
           </section>
         </div>
       </ToolLayout>
+
+      {showPreviewModal && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm">
+          <div className="h-full w-full flex flex-col">
+            <div className="flex items-center justify-between px-4 py-3 sm:px-6 border-b border-white/10 bg-dark-900/80">
+              <button
+                type="button"
+                onClick={clearAllFiles}
+                disabled={!files.length || processing}
+                className="text-sm text-slate-300 hover:text-red-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Clear All
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowPreviewModal(false)}
+                className="text-2xl leading-none text-slate-200 hover:text-white transition-colors"
+                aria-label="Close preview"
+              >
+                ×
+              </button>
+            </div>
+
+            <div className="flex-1 overflow-y-auto p-4 sm:p-6">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                {files.map((file, i) => (
+                  <div
+                    key={file.name + i}
+                    className="relative group"
+                    draggable
+                    onDragStart={() => handleDragStart(i)}
+                    onDragOver={handleDragOver}
+                    onDrop={() => handleDropReorder(i)}
+                    onDragEnd={() => setDraggedIndex(null)}
+                  >
+                    <div className="aspect-square rounded-lg overflow-hidden bg-dark-700 border border-dark-600">
+                      <img
+                        src={URL.createObjectURL(file)}
+                        alt={file.name}
+                        className="w-full h-full object-cover"
+                        onLoad={(e) => URL.revokeObjectURL(e.target.src)}
+                      />
+                    </div>
+                    <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-200 rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100">
+                      <button
+                        type="button"
+                        onClick={() => removeFile(i)}
+                        className="bg-red-500 hover:bg-red-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-lg font-bold transition-colors"
+                        aria-label="Remove image"
+                      >
+                        ×
+                      </button>
+                    </div>
+                    <div className="absolute bottom-1 left-1 bg-black bg-opacity-75 text-white text-xs px-2 py-1 rounded">
+                      {(file.size / 1024 / 1024).toFixed(1)} MB
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <DownloadSuccessModal
         open={showSuccess}

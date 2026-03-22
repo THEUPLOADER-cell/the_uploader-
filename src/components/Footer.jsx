@@ -1,18 +1,6 @@
 import { Link } from 'react-router-dom'
 import Logo from './Logo'
-
-const toolLinks = [
-  { to: '/image-to-pdf', label: 'Image to PDF' },
-  { to: '/word-to-pdf', label: 'Word to PDF' },
-  { to: '/pdf-compressor', label: 'PDF Compressor' },
-  { to: '/image-compressor', label: 'Image Compressor' },
-  { to: '/pdf-merger', label: 'PDF Merger' },
-  { to: '/pdf-splitter', label: 'PDF Splitter' },
-  { to: '/image-resizer', label: 'Image Resizer' },
-  { to: '/image-converter', label: 'Image Converter' },
-  { to: '/pdf-watermark', label: 'PDF Watermark' },
-  { to: '/pdf-page-extractor', label: 'PDF Page Extractor' },
-]
+import { TOOLS } from '../data/tools'
 
 export default function Footer() {
   return (
@@ -30,13 +18,13 @@ export default function Footer() {
         <div className="mt-10 pt-8 border-t border-dark-600">
           <h3 className="text-sm font-medium text-white mb-4">All Tools</h3>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
-            {toolLinks.map((link) => (
+            {TOOLS.map((tool) => (
               <Link
-                key={link.to}
-                to={link.to}
+                key={tool.to}
+                to={tool.to}
                 className="text-slate-400 hover:text-accent-secondary text-sm transition-colors"
               >
-                {link.label}
+                {tool.title}
               </Link>
             ))}
           </div>

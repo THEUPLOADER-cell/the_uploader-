@@ -10,6 +10,7 @@ export default function NotFoundPage() {
           name="description"
           content="The page you’re looking for doesn’t exist. Return to THE UPLOADER homepage to use our free PDF and image tools."
         />
+        <meta name="robots" content="noindex, follow" />
       </Helmet>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="rounded-2xl bg-dark-800 border border-dark-600 p-8 shadow-card text-center">

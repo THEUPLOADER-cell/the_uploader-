@@ -7,7 +7,7 @@
     "predev": "node scripts/generate-seo.mjs",
     "dev": "vite",
     "prebuild": "node scripts/generate-seo.mjs",
-    "build": "vite build",
+    "build": "vite build && npx playwright install chromium && node scripts/prerender.mjs",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -32,6 +32,8 @@
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.17",
     "postcss": "^8.4.35",
+    "playwright": "^1.49.1",
+    "serve-handler": "^6.1.6",
     "tailwindcss": "^3.4.1",
     "vite": "^5.1.0"
   }

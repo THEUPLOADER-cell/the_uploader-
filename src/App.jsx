@@ -50,7 +50,6 @@ function App() {
               <Route path="/pdf-merger" element={<PdfMerger />} />
               <Route path="/pdf-splitter" element={<PdfSplitter />} />
               <Route path="/image-resizer" element={<ImageResizer />} />
-              <Route path="/image-converter" element={<ImageFormatConverter />} />
               <Route path="/image-format-converter" element={<ImageFormatConverter />} />
               <Route path="/pdf-watermark" element={<PdfWatermark />} />
               <Route path="/pdf-page-extractor" element={<PdfPageExtractor />} />

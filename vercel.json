@@ -17,14 +17,17 @@
       "has": [
         {
           "type": "host",
-          "value": "www.theuploader.in"
+          "value": "theuploader.in"
         }
       ],
-      "destination": "https://theuploader.in/:path",
+      "destination": "https://www.theuploader.in/:path",
+      "permanent": true
+    },
+    {
+      "source": "/image-converter",
+      "destination": "/image-format-converter",
       "permanent": true
     }
   ],
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/" }
-  ]
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }

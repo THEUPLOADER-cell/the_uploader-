@@ -8,7 +8,7 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 const projectRoot = path.resolve(__dirname, '..')
 
-const SITE_URL = (process.env.SITE_URL || process.env.VITE_SITE_URL || 'https://theuploader.in')
+const SITE_URL = (process.env.SITE_URL || process.env.VITE_SITE_URL || 'https://www.theuploader.in')
   .trim()
   .replace(/\/+$/, '')
 
@@ -59,8 +59,7 @@ fs.writeFileSync(path.join(publicDir, 'sitemap.xml'), sitemap, 'utf8')
 const robots =
   `User-agent: *\n` +
   `Allow: /\n\n` +
-  `# Block common non-public/system paths (add if introduced)\n` +
-  `Disallow: /assets/\n` +
+  `# Dev-only paths are not deployed; listed for crawlers that probe common URLs\n` +
   `Disallow: /src/\n` +
   `Disallow: /node_modules/\n\n` +
   `Sitemap: ${SITE_URL}/sitemap.xml\n`

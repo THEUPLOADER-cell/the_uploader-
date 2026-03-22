@@ -1,14 +1,29 @@
 import { Helmet } from 'react-helmet-async'
+import { canonicalUrl, getSiteUrl } from '../utils/site'
 
 export default function PrivacyPolicyPage() {
+  const title = 'Privacy Policy | THE UPLOADER'
+  const description =
+    'Learn how THE UPLOADER protects your privacy. Files never leave your device, no login is required, and we do not store or collect personal data.'
+  const canonical = canonicalUrl('/privacy-policy')
+  const ogImage = `${getSiteUrl()}/logo.svg`
+
   return (
     <>
       <Helmet>
-        <title>Privacy Policy | THE UPLOADER</title>
-        <meta
-          name="description"
-          content="Learn how THE UPLOADER protects your privacy. Files never leave your device, no login is required, and we do not store or collect personal data."
-        />
+        <title>{title}</title>
+        <meta name="description" content={description} />
+        <meta name="robots" content="index, follow" />
+        <link rel="canonical" href={canonical} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:url" content={canonical} />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content={ogImage} />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={ogImage} />
       </Helmet>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
         <h1 className="font-display text-3xl sm:text-4xl font-bold text-white mb-6">
