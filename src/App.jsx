@@ -1,5 +1,5 @@
-import { lazy, Suspense } from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { lazy, Suspense, useEffect, useRef } from 'react'
+import { Routes, Route, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
@@ -34,6 +34,22 @@ const PageLoader = () => (
 )
 
 function App() {
+  const location = useLocation()
+  const lastTrackedPathRef = useRef(null)
+
+  useEffect(() => {
+    const measurementId = 'G-BB8VB68XF'
+    const gtag = typeof window !== 'undefined' ? window.gtag : undefined
+    if (typeof gtag !== 'function') return
+
+    const pagePath = `${location.pathname}${location.search}${location.hash}`
+    if (lastTrackedPathRef.current === pagePath) return
+    lastTrackedPathRef.current = pagePath
+
+    // Tell GA4 about the current SPA route.
+    gtag('config', measurementId, { page_path: pagePath })
+  }, [location.pathname, location.search, location.hash])
+
   return (
     <ToolSearchProvider>
       <div className="relative flex flex-col min-h-screen bg-dark-900 text-white">
