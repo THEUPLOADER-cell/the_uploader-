@@ -7,7 +7,9 @@
     "predev": "node scripts/generate-seo.mjs && node scripts/generate-favicon.mjs",
     "dev": "vite",
     "prebuild": "node scripts/generate-seo.mjs && node scripts/generate-favicon.mjs",
-    "build": "vite build && npx playwright install chromium && node scripts/prerender.mjs",
+    "build": "vite build",
+    "prerender": "node scripts/prerender.mjs",
+    "build:prerender": "vite build && node scripts/prerender.mjs",
     "preview": "vite preview"
   },
   "dependencies": {

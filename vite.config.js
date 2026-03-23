@@ -8,7 +8,12 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          pdf: ['pdf-lib', 'pdfjs-dist', 'jspdf'],
+          // Reduce oversized chunks by splitting heavy PDF libraries.
+          // They are only needed on the specific tool pages (already lazy-loaded),
+          // but manualChunks keeps them from being bundled into one >1MB chunk.
+          pdfLib: ['pdf-lib'],
+          pdfJs: ['pdfjs-dist'],
+          jspdf: ['jspdf'],
           image: ['browser-image-compression'],
         },
       },
