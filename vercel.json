@@ -4,12 +4,32 @@
       "source": "/:path((?!404).*)",
       "has": [
         {
+          "type": "host",
+          "value": "www.theuploader.in"
+        },
+        {
           "type": "header",
           "key": "x-forwarded-proto",
           "value": "http"
         }
       ],
-      "destination": "https://:host/:path",
+      "destination": "https://www.theuploader.in/:path",
+      "permanent": true
+    },
+    {
+      "source": "/:path(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "theuploader.in"
+        },
+        {
+          "type": "header",
+          "key": "x-forwarded-proto",
+          "value": "http"
+        }
+      ],
+      "destination": "https://www.theuploader.in/:path",
       "permanent": true
     },
     {
