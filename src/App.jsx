@@ -38,7 +38,7 @@ function App() {
   const lastTrackedPathRef = useRef(null)
 
   useEffect(() => {
-    const measurementId = 'G-BB8VB68XF'
+    const measurementId = 'G-MXHR2YJ86C'
     const gtag = typeof window !== 'undefined' ? window.gtag : undefined
     if (typeof gtag !== 'function') return
 

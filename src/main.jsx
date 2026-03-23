@@ -1,5 +1,5 @@
 // Inject GA4 script before React renders (runs once on initial load).
-const gaMeasurementId = 'G-BB8VB68XF'
+const gaMeasurementId = 'G-MXHR2YJ86C'
 if (typeof document !== 'undefined') {
   const existingGtag = document.querySelector(
     `script[src="https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}"]`
