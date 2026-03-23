@@ -17,6 +17,7 @@ fs.mkdirSync(publicDir, { recursive: true })
 
 const CORE_PAGES = [
   { loc: '/', changefreq: 'weekly', priority: '1.0' },
+  { loc: '/about', changefreq: 'monthly', priority: '0.5' },
   { loc: '/help', changefreq: 'monthly', priority: '0.4' },
   { loc: '/privacy-policy', changefreq: 'yearly', priority: '0.3' },
 ]

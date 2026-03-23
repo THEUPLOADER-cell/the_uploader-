@@ -142,6 +142,12 @@ export default function Navbar() {
               Help &amp; Guidance
             </Link>
             <Link
+              to="/about"
+              className="text-slate-300 hover:text-white transition-colors text-sm font-medium"
+            >
+              About Us
+            </Link>
+            <Link
               to="/privacy-policy"
               className="text-slate-300 hover:text-white transition-colors text-sm font-medium"
             >
@@ -257,6 +263,13 @@ export default function Navbar() {
                 onClick={() => setOpen(false)}
               >
                 Help &amp; Guidance
+              </Link>
+              <Link
+                to="/about"
+                className="py-2 text-slate-300 hover:text-white"
+                onClick={() => setOpen(false)}
+              >
+                About Us
               </Link>
               <Link
                 to="/privacy-policy"

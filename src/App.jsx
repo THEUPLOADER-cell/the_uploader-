@@ -7,6 +7,7 @@ import AnimatedBackground from './components/AnimatedBackground'
 import { ToolSearchProvider } from './context/ToolSearchContext'
 
 const HomePage = lazy(() => import('./pages/HomePage'))
+const AboutPage = lazy(() => import('./pages/AboutPage'))
 const HelpPage = lazy(() => import('./pages/HelpPage'))
 const PrivacyPolicyPage = lazy(() => import('./pages/PrivacyPolicyPage'))
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
@@ -59,6 +60,7 @@ function App() {
           <Suspense fallback={<PageLoader />}>
             <Routes>
               <Route path="/" element={<HomePage />} />
+              <Route path="/about" element={<AboutPage />} />
               <Route path="/image-to-pdf" element={<ImageToPdf />} />
               <Route path="/word-to-pdf" element={<WordToPdf />} />
               <Route path="/pdf-compressor" element={<PdfCompressor />} />
