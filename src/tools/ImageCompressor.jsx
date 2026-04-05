@@ -7,6 +7,7 @@ import UploadZone, { FilePreview } from '../components/UploadZone'
 import { useProcessing } from '../hooks/useProcessing'
 import { formatFileSize } from '../utils/fileSize'
 import DownloadSuccessModal from '../components/DownloadSuccessModal'
+import ToolInfo from "../components/ToolInfo";
 
 const IMAGE_ACCEPT = { 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'], 'image/webp': ['.webp'] }
 const MAX_SIZE = 20 * 1024 * 1024
@@ -194,7 +195,9 @@ export default function ImageCompressor() {
         open={showSuccess}
         onClose={() => setShowSuccess(false)}
         onDownloadAgain={handleDownloadAgain}
+      
       />
+      <ToolInfo title="Image Compressor" />
     </>
   )
 }

@@ -5,6 +5,7 @@ import pdfWorker from 'pdfjs-dist/build/pdf.worker.mjs?url'
 import ToolLayout from '../components/ToolLayout'
 import UploadZone, { FilePreview } from '../components/UploadZone'
 import { useProcessing } from '../hooks/useProcessing'
+import ToolInfo from "../components/ToolInfo";
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorker
 
@@ -118,6 +119,7 @@ export default function PdfToImage() {
           </p>
         </section>
       </div>
+      <ToolInfo title="PDF to Image Converter" />
     </ToolLayout>
   )
 }

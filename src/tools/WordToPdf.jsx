@@ -6,6 +6,7 @@ import ToolLayout from '../components/ToolLayout'
 import UploadZone, { FilePreview } from '../components/UploadZone'
 import { useProcessing } from '../hooks/useProcessing'
 import DownloadSuccessModal from '../components/DownloadSuccessModal'
+import ToolInfo from "../components/ToolInfo";
 
 const WORD_ACCEPT = {
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
@@ -179,6 +180,7 @@ export default function WordToPdf() {
         onClose={() => setShowSuccess(false)}
         onDownloadAgain={handleDownloadAgain}
       />
+      <ToolInfo title="Word to PDF" />
     </>
   )
 }
