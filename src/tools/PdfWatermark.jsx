@@ -5,6 +5,7 @@ import ToolLayout from '../components/ToolLayout'
 import UploadZone, { FilePreview } from '../components/UploadZone'
 import { useProcessing } from '../hooks/useProcessing'
 import DownloadSuccessModal from '../components/DownloadSuccessModal'
+import ToolInfo from "../components/ToolInfo";
 
 const PDF_ACCEPT = { 'application/pdf': ['.pdf'] }
 const MAX_SIZE = 200 * 1024 * 1024
@@ -194,6 +195,7 @@ export default function PdfWatermark() {
         onClose={() => setShowSuccess(false)}
         onDownloadAgain={handleDownloadAgain}
       />
+      <ToolInfo title="PDF Watermark" />
     </>
   )
 }

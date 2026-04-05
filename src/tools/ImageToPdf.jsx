@@ -6,6 +6,7 @@ import ToolLayout from '../components/ToolLayout'
 import UploadZone from '../components/UploadZone'
 import { useProcessing } from '../hooks/useProcessing'
 import DownloadSuccessModal from '../components/DownloadSuccessModal'
+import ToolInfo from "../components/ToolInfo";
 
 const IMAGE_ACCEPT = { 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'], 'image/webp': ['.webp'] }
 const MAX_SIZE = 20 * 1024 * 1024
@@ -443,7 +444,9 @@ export default function ImageToPdf() {
         onClose={() => setShowSuccess(false)}
         onDownloadAgain={handleDownloadAgain}
       />
+      <ToolInfo title="Image to PDF" />
     </>
+    
   )
 }
 
@@ -478,5 +481,8 @@ function webpToJpeg(dataUrl) {
     }
     img.onerror = reject
     img.src = dataUrl
-  })
+    
+  }
+)
 }
+

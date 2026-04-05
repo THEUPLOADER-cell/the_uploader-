@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import ToolLayout from '../components/ToolLayout'
 import UploadZone, { FilePreview } from '../components/UploadZone'
 import { useProcessing } from '../hooks/useProcessing'
+import ToolInfo from "../components/ToolInfo";
 
 const IMAGE_ACCEPT = { 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'], 'image/webp': ['.webp'] }
 const MAX_SIZE = 20 * 1024 * 1024
@@ -189,6 +190,7 @@ export default function ImageResizer() {
           </p>
         </section>
       </div>
+      <ToolInfo title="Image Resizer" />
     </ToolLayout>
   )
 }
