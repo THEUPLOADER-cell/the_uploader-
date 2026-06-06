@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { saveAs } from 'file-saver'
 import jsPDF from 'jspdf'
 import { Link } from 'react-router-dom'
@@ -20,6 +20,8 @@ export default function ImageToPdf() {
   const [showPreviewModal, setShowPreviewModal] = useState(false)
   const [draggedIndex, setDraggedIndex] = useState(null)
   const { processing, progress, error, start, finish, setProgressValue, setError, reset } = useProcessing()
+  const closeButtonRef = useRef(null)
+  const hasHistoryStateRef = useRef(false)
 
   // Mobile detection
   const [isMobile, setIsMobile] = useState(false)
@@ -55,6 +57,67 @@ export default function ImageToPdf() {
 
     return () => {
       document.body.style.overflow = overflow
+    }
+  }, [showPreviewModal])
+
+  // Handle history state for back button
+  useEffect(() => {
+    if (!showPreviewModal) {
+      // Modal closed - clean up history state if we added one
+      if (hasHistoryStateRef.current && typeof window !== 'undefined') {
+        hasHistoryStateRef.current = false
+      }
+      return
+    }
+
+    if (typeof window === 'undefined') return
+
+    // Modal opened - push history state to allow back button to close modal
+    const historyState = { previewModalOpen: true, timestamp: Date.now() }
+    window.history.pushState(historyState, '')
+    hasHistoryStateRef.current = true
+
+    const handlePopState = (event) => {
+      // If back button was pressed, close the modal instead of navigating
+      if (event.state?.previewModalOpen) {
+        setShowPreviewModal(false)
+        hasHistoryStateRef.current = false
+      } else {
+        // Normal back button behavior - close modal first if it was our state
+        setShowPreviewModal(false)
+        hasHistoryStateRef.current = false
+      }
+    }
+
+    window.addEventListener('popstate', handlePopState)
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState)
+    }
+  }, [showPreviewModal])
+
+  // Handle keyboard events (ESC to close)
+  useEffect(() => {
+    if (!showPreviewModal) return
+
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        event.preventDefault()
+        setShowPreviewModal(false)
+      }
+    }
+
+    if (typeof window !== 'undefined') {
+      window.addEventListener('keydown', handleKeyDown)
+      return () => window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [showPreviewModal])
+
+  // Focus management - focus close button when modal opens
+  useEffect(() => {
+    if (showPreviewModal && closeButtonRef.current) {
+      // Use setTimeout to ensure DOM is ready
+      setTimeout(() => closeButtonRef.current?.focus(), 0)
     }
   }, [showPreviewModal])
 
@@ -377,7 +440,44 @@ export default function ImageToPdf() {
       </ToolLayout>
 
       {showPreviewModal && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm">
+        <div 
+          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm"
+          onClick={(e) => {
+            // Close modal when clicking the backdrop itself, not on children
+            if (e.target === e.currentTarget) {
+              setShowPreviewModal(false)
+            }
+          }}
+        >
+          {/* Floating close button - positioned fixed at top level */}
+          <button
+            ref={closeButtonRef}
+            type="button"
+            onClick={() => setShowPreviewModal(false)}
+            style={{
+              position: 'fixed',
+              top: '16px',
+              right: '16px',
+              zIndex: 99999,
+              width: '48px',
+              height: '48px',
+              backgroundColor: '#ff0000',
+              border: 'none',
+              borderRadius: '50%',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '24px',
+              fontWeight: 'bold',
+              color: 'white'
+            }}
+            aria-label="Close image preview"
+            title="Close preview (ESC)"
+          >
+            ✕
+          </button>
+
           <div className="h-full w-full flex flex-col">
             <div className="flex items-center justify-between px-4 py-3 sm:px-6 border-b border-white/10 bg-dark-900/80">
               <button
@@ -388,14 +488,8 @@ export default function ImageToPdf() {
               >
                 Clear All
               </button>
-              <button
-                type="button"
-                onClick={() => setShowPreviewModal(false)}
-                className="text-2xl leading-none text-slate-200 hover:text-white transition-colors"
-                aria-label="Close preview"
-              >
-                ×
-              </button>
+              {/* Placeholder for spacing */}
+              <div />
             </div>
 
             <div className="flex-1 overflow-y-auto p-4 sm:p-6">
@@ -422,7 +516,7 @@ export default function ImageToPdf() {
                       <button
                         type="button"
                         onClick={() => removeFile(i)}
-                        className="bg-red-500 hover:bg-red-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-lg font-bold transition-colors"
+                        className="bg-red-500 hover:bg-red-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-lg font-bold transition-colors focus:outline-none focus:ring-2 focus:ring-red-400"
                         aria-label="Remove image"
                       >
                         ×
